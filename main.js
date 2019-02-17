@@ -31,9 +31,33 @@ class BlockChain{
 		newBlock.hash = newBlock.calculatehash()
 		this.chain.push(newBlock)
 	}
+
+	isValidBlock(){
+		for(let i=1; i<this.chain.length; i++){
+			const previousBlock = this.chain[i-1];
+			const currentBlock = this.chain[i];
+
+			if(currentBlock.hash !== currentBlock.calculatehash()){				
+				return false;
+			}
+
+			if(currentBlock.previouhash !== previousBlock.hash){				
+				return false;
+			}
+		}
+		return true; 
+	}
 }
 
 let testblock = new BlockChain();
 testblock.createBlock(new Block(1,'02/01/2019',{"amount":10}));
 testblock.createBlock(new Block(2,'03/01/2019',{"amount":20}))
 console.log(JSON.stringify(testblock).toString());
+
+console.log(testblock.isValidBlock());
+
+testblock.chain[1].data = {"amount":100};
+
+console.log(testblock.isValidBlock());
+
+
